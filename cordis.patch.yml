@@ -1,0 +1,7 @@
+# dsh-convey-assistant —— 插件装配层
+# 宿主半边：lib/index.js 注册 /api/dsh-convey-assistant/rewrite 受认证路由
+# 客户端半边：lib/client.js 由 dsh.client 声明，在输入框加入按钮与意图卡片
+- insert:
+    - id: convey-assistant
+      name: 'dsh-convey-assistant'
+      config: {}
