@@ -61,7 +61,7 @@ dsh plugin --profile web add ./dsh-convey-assistant-0.1.0.tgz
 
 也可以在 **设置 → 插件 → 添加插件** 里粘贴 GitHub 地址。
 
-装完刷新页面即可，无需重启。
+装完刷新页面；如果按钮没出现，重启一次 DSH（新增 bundle 有时需要重新装配 host 侧）。
 
 ### 卸载（从零复现用）
 

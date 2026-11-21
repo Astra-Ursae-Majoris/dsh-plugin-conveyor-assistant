@@ -92,6 +92,6 @@ if ($bundles -notcontains $PKG) {
 
 Write-Host ""
 Write-Host "完成。下一步：" -ForegroundColor Green
-Write-Host "  1) 回到 DSH 窗口按 Ctrl+R 刷新"
+Write-Host "  1) 回到 DSH 窗口按 Ctrl+R 刷新；按钮没出现就重启一次 DSH"
 Write-Host "  2) 输入框工具栏应出现 ✨（轻）与 🪄（重）"
 Write-Host "  3) 卸载：powershell -ExecutionPolicy Bypass -File scripts\uninstall.ps1 -Profile $Profile"

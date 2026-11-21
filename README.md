@@ -60,7 +60,7 @@ dsh plugin --profile web add "github:Astra-Ursae-Majoris/dsh-convey-assistant"
 dsh plugin --profile web add ./dsh-convey-assistant-0.1.0.tgz
 ```
 
-You can also paste the GitHub URL into **Settings → Plugins → Add plugin**. Refresh the page; no restart needed.
+You can also paste the GitHub URL into **Settings → Plugins → Add plugin**. Refresh the page — if the buttons do not appear, restart DSH once (a newly added bundle sometimes needs the host to re-compose).
 
 ### Uninstall (for a clean from-scratch test)
 
