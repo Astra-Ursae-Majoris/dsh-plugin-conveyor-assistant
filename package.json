@@ -1,7 +1,7 @@
 {
   "name": "dsh-convey-assistant",
-  "version": "0.2.2",
-  "description": "Turn a rough draft into intent an AI agent cannot misread — a light bullet summary or a deep intent rewrite, plus clarifying questions — before you send it.",
+  "version": "0.2.3",
+  "description": "把口语草稿翻译成 AI Agent 不会误读的意图：先追问你没说清楚的地方（气泡提示），再改写成结构化工单，你确认后才写回输入框。附带一只常驻的像素大肥鱼，鼠标一停就自己溜达。",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -78,7 +78,9 @@
     "prompt",
     "intent",
     "rewrite",
-    "prompt-engineering"
+    "prompt-engineering",
+    "clarifying-questions",
+    "distractor-pet"
   ],
   "homepage": "https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant#readme",
   "bugs": {

@@ -2,8 +2,20 @@
 
 > Say it once, say it right — turn a rough draft into intent an AI agent cannot misread.
 
-A [DeepSeek Harness](https://www.deepseek.com/en/harness/) (DSH) plugin: one ✨ in the composer,
-one resident **fat fish**, one intent confirmation. **Before you press send.**
+A [DeepSeek Harness](https://www.deepseek.com/en/harness/) (DSH) plugin that does three things:
+
+**① Translates what you typed into what an agent can act on** — one ✨ turns a rough draft into a
+structured, unambiguous intent (goal / deliverable / constraints / acceptance), editable in a card,
+written back only after you confirm.
+
+**② Asks you the questions you did not think to answer** — she reads the draft from the receiving
+agent's seat, finds the forks that would make it guess, and turns them into one plain-language
+question in the card. Add a sentence, hit Recompile, done.
+
+**③ Keeps you company with a moving pixel fat fish** — the resident switch below the composer
+(on by default): when your mouse is still she wanders around; the moment you move it she freezes.
+Hover her and she asks "Master, would you like to configure me?" — click to open her settings.
+**Before you press send.**
 
 ![Demo: she wanders around, and asks to be configured when you hover her](docs/demo.gif)
 
