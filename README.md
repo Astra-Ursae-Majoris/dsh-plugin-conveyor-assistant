@@ -7,6 +7,8 @@ one resident **fat fish**, one intent confirmation. **Before you press send.**
 
 ![Demo: she wanders around, and asks to be configured when you hover her](docs/demo.gif)
 
+<sub>The demo animation is rendered frame by frame from the plugin's real pixel sprite — it is not a screen recording.</sub>
+
 English | [中文](README.zh.md)
 
 ---
