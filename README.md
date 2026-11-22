@@ -35,7 +35,7 @@ and installation runs **no build script on your machine**.
 ### A. Clone + one command (recommended)
 
 ```bash
-git clone https://github.com/Astra-Ursae-Majoris/dsh-convey-assistant.git
+git clone https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant.git
 cd dsh-convey-assistant
 node scripts/install.mjs          # installs into the desktop profile; use --profile web for another
 ```
@@ -46,7 +46,7 @@ The script backs up the profile's `package.json`, runs `dsh plugin add`, then en
 ### B. Straight from GitHub
 
 ```bash
-dsh plugin --profile desktop add github:Astra-Ursae-Majoris/dsh-convey-assistant
+dsh plugin --profile desktop add github:Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant
 ```
 
 (Then add `dsh-convey-assistant` to `dsh.profile.bundles` in the profile's `package.json` — method A does this for you.)

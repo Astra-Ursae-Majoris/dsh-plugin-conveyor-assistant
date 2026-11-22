@@ -62,7 +62,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Astra-Ursae-Majoris/dsh-convey-assistant.git"
+    "url": "git+https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant.git"
   },
   "scripts": {
     "build": "node build.mjs",
@@ -80,8 +80,8 @@
     "rewrite",
     "prompt-engineering"
   ],
-  "homepage": "https://github.com/Astra-Ursae-Majoris/dsh-convey-assistant#readme",
+  "homepage": "https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant#readme",
   "bugs": {
-    "url": "https://github.com/Astra-Ursae-Majoris/dsh-convey-assistant/issues"
+    "url": "https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant/issues"
   }
 }

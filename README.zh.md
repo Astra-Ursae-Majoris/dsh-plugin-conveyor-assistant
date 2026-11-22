@@ -35,7 +35,7 @@
 ### 方式 A：克隆 + 一条命令（推荐）
 
 ```bash
-git clone https://github.com/Astra-Ursae-Majoris/dsh-convey-assistant.git
+git clone https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant.git
 cd dsh-convey-assistant
 node scripts/install.mjs          # 默认装 desktop profile；换 profile 用 --profile web
 ```
@@ -46,7 +46,7 @@ node scripts/install.mjs          # 默认装 desktop profile；换 profile 用 
 ### 方式 B：直接从 GitHub 装
 
 ```bash
-dsh plugin --profile desktop add github:Astra-Ursae-Majoris/dsh-convey-assistant
+dsh plugin --profile desktop add github:Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant
 ```
 
 （装完同样要手动把 `dsh-convey-assistant` 加进 profile 的 `dsh.profile.bundles`，否则 DSH 不会装配它 —— 用方式 A 就不用管这步。）
