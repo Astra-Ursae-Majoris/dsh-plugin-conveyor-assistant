@@ -22,7 +22,7 @@ export const SETTINGS_KEYS = {
 
 /** 一次"跟她有关的"全部偏好 */
 export interface ConveySettings {
-  /** 让 DSH娘 常驻（默认 true：第一次安装就该看见她） */
+  /** 让大肥鱼常驻（默认 true：第一次安装就该看见她） */
   readonly resident: boolean
   /** 活动许可：允许她在安全区里乱跑（默认 true） */
   readonly roam: boolean

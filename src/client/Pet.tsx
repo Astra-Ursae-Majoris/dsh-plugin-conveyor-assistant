@@ -2,7 +2,7 @@
  * 追问区的小桌面宠物 —— **像素风 sprite** 版（24×24 字符网格 + 调色板）。
  *
  * 为什么用像素网格而不是矢量 chibi：
- * - 低分辨率下"圆滚滚的蓝身 + 白色蕾丝发带 + 头顶蓝蝴蝶结 + 白围裙小蓝鲸 + 腮红"这几个特征反而更好认；
+ * - 低分辨率下"圆滚滚的蓝身 + 小背鳍 + 侧胸鳍 + 白肚皮 + 腮红"这几个特征反而更好认；
  * - 一个网格 = 数据，两帧眨眼 = 眼睛压成 1px，维护成本远低于一堆贝塞尔曲线；
  * - 渲染是**每种颜色一条 path**（不是 500 个 rect），DOM 只有几个节点，不会拖慢输入框。
  *
@@ -25,73 +25,73 @@ export type PetMood = 'idle' | 'thinking' | 'asking' | 'happy' | 'alert'
 
 /** 点击宠物时随机抽一句的本地招呼语（**不调模型**，纯暖场） */
 export const PET_GREETINGS: readonly string[] = [
-  '我在呢~ 先把你想说的话写成草稿，我帮你翻译成 Agent 听得懂的样子',
+  '噗噜噗噜~ 我在这儿，先把想说的话写成草稿，我帮你翻译成 Agent 听得懂的样子',
   '唔，这句我大概懂了 (๑•̀ㅂ•́)و 要不要我读一遍你的真实意图',
-  '别急着发嘛，我帮你看一眼有没有会被误读的地方~',
+  '别急着发嘛，我帮你瞅一眼有没有会被误读的地方~',
   '草稿我读过了，有几处想跟你确认一下呢',
   '写不动的时候可以先随便写，剩下的交给我整理~'
 ]
 
 /** 调色板：网格里每个字符对应一种颜色（'.' = 透明） */
 const PALETTE: Readonly<Record<string, string>> = {
-  h: '#3b4fa8', // 鲸身深蓝
-  H: '#5570cf', // 头顶受光
-  w: '#f7f9ff', // 蕾丝发带 / 白围裙
-  b: '#3aa0e8', // 蝴蝶结 / 鲸尾 / 围裙上的小蓝鲸
-  s: '#ffe6d5', // 皮肤（备用）
-  e: '#1b2a52', // 眼睛（深色）
-  k: '#1b2a52', // 深色（备用）
+  h: '#4a5fbd', // 鱼身
+  H: '#7d94e0', // 肚皮 / 背鳍高光
+  w: '#f7f9ff', // 眼睛高光
+  b: '#2f8fd8', // 背鳍 / 侧鳍 / 尾巴
+  e: '#141d3a', // 眼睛
+  k: '#141d3a', // 备用深色
   r: '#ff9aa8', // 腮红
   m: '#c4553f' // 嘴
 }
 
 /**
  * 24×24 像素网格（每行必须 24 个字符）。
- * 形象：一只「鲸鱼娘」小圆鲸 —— 藏青蓝身体 + 白色蕾丝发带 + 头顶蓝蝴蝶结
- *       + 白色围裙（围裙上有只 2×2 的小蓝鲸）+ 腮红 + 小嘴；鲸尾单独一组做摆尾动画。
- * 眼睛**不画进网格**，由组件用 path 绘制，这样才能做眨眼/眯眼两帧。
+ * 形象：一条**大肥鱼** —— 圆滚滚的蓝身 + 顶上小背鳍 + 两侧胸鳍 + 白肚皮 + 腮红 + 小嘴；
+ *       尾巴单独一组做摆尾动画。眼睛不画进网格，由组件用 path 绘制，这样才能眨眼/眯眼。
  */
 const SPRITE: readonly string[] = [
   '........................',
   '........................',
-  '...........bb...........',
-  '.........bbbbbb.........',
-  '.........bbwwbb.........',
-  '......w..w..w..w..w.....',
-  '.....hHHHHHHHHHHHHh.....',
-  '....hhHhHhHhHhHhHhHh....',
+  '........................',
+  '.........bHbbbb.........',
+  '........bbHHbbbb........',
+  '.......bbbbHbbbbb.......',
+  '......hhhhhhhhhhhh......',
+  '.....hhhhhhhhhhhhhh.....',
+  '....hhhhhhhhhhhhhhhh....',
+  '....hhhhhhhhhhhhhhhh....',
   '...hhhhhhhhhhhhhhhhhh...',
-  '..hhhhhhhhhhhhhhhhhhhh..',
-  '..hhhhhhhhhhhhhhhhhhhh..',
-  '..hhhhhhhhhhhhhhhhhhhh..',
-  '..hhhhhhhhhhhhhhhhhhhh..',
-  '..hhrrhhhhhhhhhhhhrrhh..',
-  '..hhhhhhhhhmmhhhhhhhhh..',
-  '..hhhhhhhhhhhhhhhhhhhh..',
-  '..hhhhwwwwwwwwwwwwhhhh..',
-  '...hhhwwwwwwwbwwwwhhh...',
-  '....hhhwwwbbbwwwwhhh....',
-  '.....hhhwwwbwwwwhhh.....',
-  '........wwwwwwww........',
+  '.bbhhhhhhhhhhhhhhhhhhbb.',
+  '.bbbhhhhhhhhhhhhhhhhbbb.',
+  '.bbbhhhhhhhhhhhhhhhhbbb.',
+  '...hhrrhhhhmmhhhhrrhh...',
+  '....hhhhhhHHHHhhhhhh....',
+  '....hhhhHHHHHHHHhhhh....',
+  '.....hhHHHHHHHHHHhh.....',
+  '......hHHHHHHHHHHh......',
+  '.......hhHHHHHHhh.......',
+  '........................',
   '........................',
   '........................',
   '........................'
 ]
 
-/** 身后的鲸鱼尾巴：单独一个动画组（摆尾），不进静态网格 */
+/** 身后的鱼尾巴：单独一个动画组（摆尾），不进静态网格 */
 const TAIL: readonly (readonly [number, number])[] = [
-  [20, 15],
-  [21, 14],
+  [21, 11],
+  [22, 10],
+  [23, 9],
+  [21, 12],
   [22, 13],
-  [22, 15],
-  [21, 16],
-  [20, 16]
+  [23, 14],
+  [21, 13],
+  [20, 12]
 ]
 
 /** 两只眼睛的左上角（2×2 像素）；眨眼时压成 1 像素高 */
 const EYES: readonly (readonly [number, number])[] = [
-  [5, 11],
-  [17, 11]
+  [7, 10],
+  [15, 10]
 ]
 
 /** 把一组像素格子合并成一条 path（指令 M x y h1 v1 h-1 z） */
@@ -186,7 +186,7 @@ export function PetAvatar({ mood, closed = false }: { readonly mood: PetMood; re
         {BODY.map((layer) => (
           <path key={layer.color} d={layer.d} fill={layer.color} />
         ))}
-        {/* 鲸鱼尾巴：独立摆动 */}
+        {/* 鱼尾巴：独立摆动 */}
         <g className="dca-pet-tail">
           <path d={TAIL_PATH} fill={PALETTE['b']} />
         </g>

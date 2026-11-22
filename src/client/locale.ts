@@ -13,18 +13,18 @@ export const NS = 'convey-assistant'
 
 /** 中文（基线语言之一） */
 export const zh = {
-  'btn.convey': '让娘把草稿翻一遍',
-  'btn.convey.aria': '把草稿交给 DSH娘 改写',
+  'btn.convey': '让大肥鱼读一遍草稿',
+  'btn.convey.aria': '把草稿交给大肥鱼改写',
 
-  'switch.resident': '让 DSH娘 常驻',
-  'switch.configure': '配置娘',
+  'switch.resident': '让大肥鱼常驻',
+  'switch.configure': '配置大肥鱼',
   'switch.aria': '常驻开关',
 
   'pet.hover': '主人，你要配置一下我吗？',
-  'pet.bubble.aria': 'DSH娘 想跟你说句话',
+  'pet.bubble.aria': '大肥鱼想跟你说句话',
 
-  'panel.aria': 'DSH娘 的配置',
-  'panel.title': '娘的小设置~',
+  'panel.aria': '大肥鱼的配置',
+  'panel.title': '大肥鱼的小设置~',
   'panel.close': '收起设置',
   'panel.model': '用哪个脑袋',
   'panel.model.follow': '跟随当前对话',
@@ -99,16 +99,16 @@ export const zh = {
 /** 英文（基线语言之二；key 必须与 zh 完全一致） */
 export const en: Record<keyof typeof zh, string> = {
   'btn.convey': 'Let her read your draft',
-  'btn.convey.aria': 'Hand the draft to the DSH girl for a rewrite',
+  'btn.convey.aria': 'Hand the draft to the fat fish for a rewrite',
 
-  'switch.resident': 'Keep the DSH girl around',
+  'switch.resident': 'Keep the fat fish around',
   'switch.configure': 'Configure her',
   'switch.aria': 'Resident switch',
 
   'pet.hover': 'Master, would you like to configure me~',
-  'pet.bubble.aria': 'The DSH girl has something to say',
+  'pet.bubble.aria': 'The fat fish has something to say',
 
-  'panel.aria': 'DSH girl settings',
+  'panel.aria': 'Fat fish settings',
   'panel.title': 'Her little settings~',
   'panel.close': 'Close settings',
   'panel.model': 'Which brain she uses',

@@ -52,7 +52,7 @@ Both obey one hard rule: **missing information becomes a question, never a fabri
 
 ## The resident pet & her settings
 
-Below the composer there is a switch: **"Let DSH-chan stay around"**, **on by default** — otherwise you would never find her.
+Below the composer there is a switch: **"Let the fat fish stay around"**, **on by default** — otherwise you would never find her.
 
 - While resident she **wanders and hops** around the empty space of the conversation. Move your mouse and she **freezes instantly**, waiting for you; a moment after you stop, she resumes.
 - **Hover her** and she asks: **"Master, would you like to configure me?"** — click it to open her settings panel:

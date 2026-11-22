@@ -1,5 +1,5 @@
 /**
- * 常驻桌宠层（v0.2）——「让 DSH娘 常驻」打开时挂在 `document.body` 上的 fixed 层。
+ * 常驻桌宠层（v0.2）——「让大肥鱼常驻」打开时挂在 `document.body` 上的 fixed 层。
  *
  * 设计要点（对应需求 C/D/E）：
  * - **安全活动区**：左右各留 48px、上方留 96px；下边界 = 输入卡片上沿 - 24px。
@@ -9,7 +9,7 @@
  * - **鼠标联动**：全局 mousemove（passive）→ 立刻定格（读当前 transform、关掉过渡）+ alert 表情；
  *   鼠标静止 1200ms 后恢复游走。
  * - **重新登场**：本组件只在 resident=on 时挂载，所以每次开关打开都会重新挂载 → 播一次淡入 + 跳两下。
- * - 无障碍：娘本体 aria-hidden 且不可 Tab 聚焦；气泡是 aria-live 区域；齿轮按钮在开关行里给键盘用户。
+ * - 无障碍：鱼本体 aria-hidden 且不可 Tab 聚焦；气泡是 aria-live 区域；齿轮按钮在开关行里给键盘用户。
  *
  * 性能：一次游走只改两个 state（目标坐标 + 偶发小动作），DOM 只有 sprite 的几个 path。
  */
@@ -70,7 +70,7 @@ function clamp(value: number, min: number, max: number): number {
  * 下边界取"所有挡路方块的最小上沿"再减 24px：
  * - `[data-composer-card]`：宿主输入卡片（本体 + 发送键都在里面）；
  * - `[data-dca-card]`：我们自己的意图审阅卡片——它临时出现在输入卡片**上方**，
- *   不把它算进去的话，娘会踩着审阅卡片走路。
+ *   不把它算进去的话，她会踩着审阅卡片走路。
  * 一个都取不到（还没挂载 / 被滚出视口）时退化成 `innerHeight - 240`。
  */
 export function readPetArea(): PetArea {
@@ -110,7 +110,7 @@ function useReducedMotion(): boolean {
 function besidePet(pos: { x: number; y: number }, width: number, heightGuess: number): {
   left: number
   top: number
-  /** 尾巴朝哪边（left = 气泡在娘的右边，尾巴指向左） */
+  /** 尾巴朝哪边（left = 气泡在鱼的右边，尾巴指向左） */
   tail: 'left' | 'right'
 } {
   const viewportWidth = window.innerWidth
@@ -324,7 +324,7 @@ function PetLayer({ t, forge }: { readonly t: Translate; readonly forge: ConveyR
   const frozenClass = frozen ? ' dca-pet-body--frozen' : ''
   const actionClass = action === 'hop' ? ' dca-pet-hop' : action === 'sway' ? ' dca-pet-sway-once' : ''
 
-  // 用 HTMLElement 泛型：同一个处理函数既要挂在 div（娘本体）上，也要挂在气泡的 button 上
+  // 用 HTMLElement 泛型：同一个处理函数既要挂在 div（鱼本体）上，也要挂在气泡的 button 上
   const onPetClick = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault()
     event.stopPropagation()

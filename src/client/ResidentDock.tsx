@@ -1,7 +1,7 @@
 /**
  * 常驻开关行（v0.2）：挂在 `conversation.composer.dock`（输入卡片**下方**的整宽 list 槽）。
  *
- * 一行紧凑控件：`[●] 让 DSH娘 常驻` + （常驻时）一个"配置娘"的小齿轮。
+ * 一行紧凑控件：`[●] 让大肥鱼常驻` + （常驻时）一个"配置大肥鱼"的小齿轮。
  * 开关状态存 localStorage（`settings.ts`），默认 ON。
  *
  * 桌宠本体（PetOverlay）由这里挂载：它只在 resident=on 时存在，所以每次"关掉→再打开"

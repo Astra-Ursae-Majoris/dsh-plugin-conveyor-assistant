@@ -8,7 +8,7 @@
  *    （直接 register 一个还没被声明的槽会抛错）：
  *    · conversation.input.left     —— ✨ 一个按钮
  *    · conversation.input.dock     —— 意图确认卡片（unchanged）
- *    · conversation.composer.dock  —— v0.2「让 DSH娘 常驻」开关行 + 桌宠宿主
+ *    · conversation.composer.dock  —— v0.2「让大肥鱼常驻」开关行 + 桌宠宿主
  *
  * 注意：本文件不 import 任何未安装的客户端包；服务只通过结构类型访问（见 types.ts 顶部说明）。
  */
