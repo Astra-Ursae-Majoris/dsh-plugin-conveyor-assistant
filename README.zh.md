@@ -53,7 +53,9 @@ dsh plugin --profile desktop add github:Astra-Ursae-Majoris/dsh-plugin-conveyor-
 
 ### 方式 C：GUI 里装
 
-**设置 → 插件 → 添加插件**，粘贴仓库地址。
+**设置 → 插件 → 添加插件**，粘贴仓库地址 `https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant`，点「安装」。
+
+如果装完刷新后毫无反应，检查 profile 的 `package.json` 里 `dsh.profile.bundles` 是否包含 `dsh-convey-assistant`（GUI 一般会自动加；没加就手动补上再刷新）。
 
 > 装完**刷新页面**即可；按钮没出现就重启一次 DSH（新增 bundle 有时需要重新装配宿主侧）。
 

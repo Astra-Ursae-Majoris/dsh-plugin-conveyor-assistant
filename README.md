@@ -53,7 +53,9 @@ dsh plugin --profile desktop add github:Astra-Ursae-Majoris/dsh-plugin-conveyor-
 
 ### C. From the GUI
 
-**Settings → Plugins → Add plugin**, paste the repository URL.
+**Settings → Plugins → Add plugin**, paste `https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant` and hit install.
+
+If nothing shows up after a refresh, check that `dsh-convey-assistant` is listed in `dsh.profile.bundles` inside the profile's `package.json` (the GUI normally does this for you).
 
 > Refresh the page afterwards; if nothing appears, restart DSH once (a newly added bundle sometimes needs the host to re-compose).
 
