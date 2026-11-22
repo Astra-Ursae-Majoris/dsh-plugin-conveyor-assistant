@@ -2,7 +2,7 @@
  * 追问区的小桌面宠物 —— **像素风 sprite** 版（24×24 字符网格 + 调色板）。
  *
  * 为什么用像素网格而不是矢量 chibi：
- * - 低分辨率下"圆滚滚的蓝身 + 小背鳍 + 侧胸鳍 + 白肚皮 + 腮红"这几个特征反而更好认；
+ * - 低分辨率下"圆滚滚的蓝身 + 头顶蕾丝小发带 + 蓝蝴蝶结 + 白肚皮小鱼 + 腮红"这几个特征反而更好认；
  * - 一个网格 = 数据，两帧眨眼 = 眼睛压成 1px，维护成本远低于一堆贝塞尔曲线；
  * - 渲染是**每种颜色一条 path**（不是 500 个 rect），DOM 只有几个节点，不会拖慢输入框。
  *
@@ -34,43 +34,45 @@ export const PET_GREETINGS: readonly string[] = [
 
 /** 调色板：网格里每个字符对应一种颜色（'.' = 透明） */
 const PALETTE: Readonly<Record<string, string>> = {
-  h: '#4a5fbd', // 鱼身
-  H: '#7d94e0', // 肚皮 / 背鳍高光
-  w: '#f7f9ff', // 眼睛高光
-  b: '#2f8fd8', // 背鳍 / 侧鳍 / 尾巴
-  e: '#141d3a', // 眼睛
-  k: '#141d3a', // 备用深色
+  h: '#3b4fa8', // 鱼身深蓝
+  H: '#5570cf', // 头顶受光
+  w: '#f7f9ff', // 蕾丝发带 / 白肚皮
+  b: '#3aa0e8', // 蝴蝶结 / 尾巴 / 肚皮上的小鱼
+  s: '#ffe6d5', // 皮肤（备用）
+  e: '#1b2a52', // 眼睛（深色）
+  k: '#1b2a52', // 深色（备用）
   r: '#ff9aa8', // 腮红
   m: '#c4553f' // 嘴
 }
 
 /**
  * 24×24 像素网格（每行必须 24 个字符）。
- * 形象：一条**大肥鱼** —— 圆滚滚的蓝身 + 顶上小背鳍 + 两侧胸鳍 + 白肚皮 + 腮红 + 小嘴；
- *       尾巴单独一组做摆尾动画。眼睛不画进网格，由组件用 path 绘制，这样才能眨眼/眯眼。
+ * 形象：**圆滚滚的大肥鱼** —— 藏青蓝鱼身 + 头顶白色蕾丝小发带 + 蓝蝴蝶结
+ *       + 白肚皮（肚皮上有条小小的鱼）+ 腮红 + 小嘴；尾巴单独一组做摆尾动画。
+ * 眼睛**不画进网格**，由组件用 path 绘制，这样才能做眨眼/眯眼两帧。
  */
 const SPRITE: readonly string[] = [
   '........................',
   '........................',
-  '........................',
-  '.........bHbbbb.........',
-  '........bbHHbbbb........',
-  '.......bbbbHbbbbb.......',
-  '......hhhhhhhhhhhh......',
-  '.....hhhhhhhhhhhhhh.....',
-  '....hhhhhhhhhhhhhhhh....',
-  '....hhhhhhhhhhhhhhhh....',
+  '...........bb...........',
+  '.........bbbbbb.........',
+  '.........bbwwbb.........',
+  '......w..w..w..w..w.....',
+  '.....hHHHHHHHHHHHHh.....',
+  '....hhHhHhHhHhHhHhHh....',
   '...hhhhhhhhhhhhhhhhhh...',
-  '.bbhhhhhhhhhhhhhhhhhhbb.',
-  '.bbbhhhhhhhhhhhhhhhhbbb.',
-  '.bbbhhhhhhhhhhhhhhhhbbb.',
-  '...hhrrhhhhmmhhhhrrhh...',
-  '....hhhhhhHHHHhhhhhh....',
-  '....hhhhHHHHHHHHhhhh....',
-  '.....hhHHHHHHHHHHhh.....',
-  '......hHHHHHHHHHHh......',
-  '.......hhHHHHHHhh.......',
-  '........................',
+  '..hhhhhhhhhhhhhhhhhhhh..',
+  '..hhhhhhhhhhhhhhhhhhhh..',
+  '..hhhhhhhhhhhhhhhhhhhh..',
+  '..hhhhhhhhhhhhhhhhhhhh..',
+  '..hhrrhhhhhhhhhhhhrrhh..',
+  '..hhhhhhhhhmmhhhhhhhhh..',
+  '..hhhhhhhhhhhhhhhhhhhh..',
+  '..hhhhwwwwwwwwwwwwhhhh..',
+  '...hhhwwwwwwwbwwwwhhh...',
+  '....hhhwwwbbbwwwwhhh....',
+  '.....hhhwwwbwwwwhhh.....',
+  '........wwwwwwww........',
   '........................',
   '........................',
   '........................'
@@ -78,20 +80,18 @@ const SPRITE: readonly string[] = [
 
 /** 身后的鱼尾巴：单独一个动画组（摆尾），不进静态网格 */
 const TAIL: readonly (readonly [number, number])[] = [
-  [21, 11],
-  [22, 10],
-  [23, 9],
-  [21, 12],
+  [20, 15],
+  [21, 14],
   [22, 13],
-  [23, 14],
-  [21, 13],
-  [20, 12]
+  [22, 15],
+  [21, 16],
+  [20, 16]
 ]
 
 /** 两只眼睛的左上角（2×2 像素）；眨眼时压成 1 像素高 */
 const EYES: readonly (readonly [number, number])[] = [
-  [7, 10],
-  [15, 10]
+  [5, 11],
+  [17, 11]
 ]
 
 /** 把一组像素格子合并成一条 path（指令 M x y h1 v1 h-1 z） */

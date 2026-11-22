@@ -257,7 +257,7 @@ export const PET_CSS = `
   height: 96px;
   pointer-events: auto;
   cursor: pointer;
-  transition: transform 1.2s cubic-bezier(.4, 0, .2, 1);
+  transition: transform 2s cubic-bezier(.36, .04, .3, 1);
   will-change: transform;
   filter: drop-shadow(0 4px 8px rgba(20, 30, 70, 0.16));
 }

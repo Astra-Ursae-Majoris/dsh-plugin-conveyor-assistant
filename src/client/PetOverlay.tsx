@@ -5,7 +5,7 @@
  * - **安全活动区**：左右各留 48px、上方留 96px；下边界 = 输入卡片上沿 - 24px。
  *   卡片位置每次 resize / 页面滚动（capture 监听，容器滚动也算）都重算；取不到卡片就退化成
  *   `innerHeight - 240`。她永远在输入框与发送键上方，任何情况下不覆盖它们。
- * - **游走**：只用 timer + CSS `transition: transform 1.2s cubic-bezier(.4,0,.2,1)`，没有 rAF 常驻循环。
+ * - **游走**：只用 timer + CSS `transition: transform 2s cubic-bezier(.4,0,.2,1)`，没有 rAF 常驻循环。
  * - **鼠标联动**：全局 mousemove（passive）→ 立刻定格（读当前 transform、关掉过渡）+ alert 表情；
  *   鼠标静止 1200ms 后恢复游走。
  * - **重新登场**：本组件只在 resident=on 时挂载，所以每次开关打开都会重新挂载 → 播一次淡入 + 跳两下。
@@ -43,8 +43,8 @@ const MARGIN_TOP = 96
 const GAP_ABOVE_CARD = 24
 /** 取不到输入卡片时的兜底下边界 */
 const FALLBACK_BOTTOM_GAP = 240
-/** 单段游走时长（与 CSS transition 对齐） */
-const WALK_MS = 1200
+/** 单段游走时长（与 pet-css.ts 里 .dca-pet-body 的 transition 时长保持一致） */
+const WALK_MS = 2000
 /** 鼠标静止多久后恢复活动 */
 const IDLE_RESUME_MS = 1200
 /** 气泡移开后的收起延迟（穿过间隙不闪） */
@@ -276,7 +276,8 @@ function PetLayer({ t, forge }: { readonly t: Translate; readonly forge: ConveyR
         setAction(next)
         clearTimer = window.setTimeout(() => { if (!stopped) setAction(null) }, next === 'hop' ? 1100 : 720)
       }, WALK_MS + 80)
-      walkTimer = window.setTimeout(step, WALK_MS + 1600 + Math.random() * 1600)
+      // 到达后先歇一会儿再决定下一步：走得慢、歇得久，别像抽帧一样乱窜
+        walkTimer = window.setTimeout(step, WALK_MS + 2400 + Math.random() * 2400)
     }
     walkTimer = window.setTimeout(step, 800)
     return () => {
