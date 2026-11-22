@@ -13,11 +13,34 @@ export const NS = 'convey-assistant'
 
 /** 中文（基线语言之一） */
 export const zh = {
-  'btn.light': '轻：整理成列点',
-  'btn.max': '重：读意图重写',
-  'btn.light.aria': '轻度改写草稿：整理成列点',
-  'btn.max.aria': '深度改写草稿：读意图重写',
-  'btn.locked': '草稿为空、正在提交或正在编译',
+  'btn.convey': '让娘把草稿翻一遍',
+  'btn.convey.aria': '把草稿交给 DSH娘 改写',
+
+  'switch.resident': '让 DSH娘 常驻',
+  'switch.configure': '配置娘',
+  'switch.aria': '常驻开关',
+
+  'pet.hover': '主人，你要配置一下我吗？',
+  'pet.bubble.aria': 'DSH娘 想跟你说句话',
+
+  'panel.aria': 'DSH娘 的配置',
+  'panel.title': '娘的小设置~',
+  'panel.close': '收起设置',
+  'panel.model': '用哪个脑袋',
+  'panel.model.follow': '跟随当前对话',
+  'panel.model.loading': '正在翻她的模型抽屉…',
+  'panel.model.empty': '她只认得"跟随当前对话"这一项，先这样用着吧~',
+  'panel.model.hint': '只影响这次改写，不会改变会话模型~',
+  'panel.model.missing': '（你原先挑的那个模型，现在不在目录里了）',
+  'panel.mode': '说话方式',
+  'panel.mode.light': '先听我说完',
+  'panel.mode.light.desc': '只把我打的字整理成列点，一个词都不换',
+  'panel.mode.max': '猜猜我到底想要什么',
+  'panel.mode.max.desc': '读懂我的意思，再用 Agent 不会误会的说法重写一遍',
+  'panel.roam': '活动许可',
+  'panel.roam.on': '你可以放松了，到处跑跑吧~',
+  'panel.roam.off': '呆住，不准动',
+  'panel.note': '这次改写只用你选的模型，不会改变会话模型~',
 
   'card.aria': '意图确认卡片',
   'card.title': '先确认一下意图~',
@@ -75,11 +98,34 @@ export const zh = {
 
 /** 英文（基线语言之二；key 必须与 zh 完全一致） */
 export const en: Record<keyof typeof zh, string> = {
-  'btn.light': 'Light: tidy into bullets',
-  'btn.max': 'Deep: rewrite the intent',
-  'btn.light.aria': 'Light rewrite: tidy the draft into bullet points',
-  'btn.max.aria': 'Deep rewrite: read the intent and rewrite',
-  'btn.locked': 'Empty draft, submitting, or already compiling',
+  'btn.convey': 'Let her read your draft',
+  'btn.convey.aria': 'Hand the draft to the DSH girl for a rewrite',
+
+  'switch.resident': 'Keep the DSH girl around',
+  'switch.configure': 'Configure her',
+  'switch.aria': 'Resident switch',
+
+  'pet.hover': 'Master, would you like to configure me~',
+  'pet.bubble.aria': 'The DSH girl has something to say',
+
+  'panel.aria': 'DSH girl settings',
+  'panel.title': 'Her little settings~',
+  'panel.close': 'Close settings',
+  'panel.model': 'Which brain she uses',
+  'panel.model.follow': 'Follow this conversation',
+  'panel.model.loading': 'Rummaging through her model drawer…',
+  'panel.model.empty': 'She only knows "follow this conversation" for now~',
+  'panel.model.hint': 'Only affects this rewrite; the conversation model stays the same~',
+  'panel.model.missing': '(the model you picked is no longer listed)',
+  'panel.mode': 'How she talks',
+  'panel.mode.light': 'Let me finish first',
+  'panel.mode.light.desc': 'Just tidies my words into bullets, not a single word changed',
+  'panel.mode.max': 'Guess what I actually want',
+  'panel.mode.max.desc': 'Reads my intent, then rewrites it so an agent cannot misread it',
+  'panel.roam': 'Permission to move',
+  'panel.roam.on': 'You may relax and wander around~',
+  'panel.roam.off': 'Freeze. Do not move.',
+  'panel.note': 'This rewrite only uses the model you picked; your conversation model stays the same~',
 
   'card.aria': 'Intent confirmation card',
   'card.title': 'Let me confirm the intent~',

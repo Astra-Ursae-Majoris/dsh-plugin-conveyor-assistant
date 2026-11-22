@@ -118,6 +118,14 @@ function optionalText(value: unknown): { ok: true; value: string | undefined } |
   return { ok: true, value: trimmed }
 }
 
+/** 取可选的 provider/model id：宽松但设长度上限，任何异常形态都按未设置处理。 */
+function routeIdOf(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined
+  const trimmed = value.trim()
+  if (trimmed === '' || trimmed.length > 128 || CONTROL_RE.test(trimmed)) return undefined
+  return trimmed
+}
+
 /** 取可选的 sessionId（客户端扩展字段，仅用于模型解析）。 */
 function sessionIdOf(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined
@@ -157,6 +165,12 @@ export function validateBody(value: unknown): ParseResult {
   if (!supplement.ok) return { ok: false, code: 'bad-request', locale: languageHint }
 
   const sessionId = sessionIdOf(record.sessionId)
+  // 本次改写临时指定的模型：必须成对出现，只给一个按未指定处理（不抛错，退回自动解析）
+  const pickedProvider = routeIdOf(record.provider)
+  const pickedModel = routeIdOf(record.model)
+  const picked = pickedProvider !== undefined && pickedModel !== undefined
+    ? { provider: pickedProvider, model: pickedModel }
+    : undefined
   const body: ConveyRequestBody = {
     draft,
     mode: mode as ConveyRequestBody['mode'],
@@ -164,6 +178,7 @@ export function validateBody(value: unknown): ParseResult {
     ...(context.value === undefined ? {} : { context: context.value }),
     ...(supplement.value === undefined ? {} : { supplement: supplement.value }),
     ...(sessionId === undefined ? {} : { sessionId }),
+    ...(picked === undefined ? {} : { provider: picked.provider, model: picked.model }),
   }
   return { ok: true, body }
 }

@@ -4,6 +4,9 @@ export const PKG = 'dsh-convey-assistant'
 /** 宿主侧受认证路由：浏览器半边只与这一个地址通话 */
 export const ROUTE_PATH = '/api/dsh-convey-assistant/rewrite'
 
+/** 模型目录路由（只读）：卡片里的下拉用，返回用户可选的模型清单 */
+export const MODELS_PATH = '/api/dsh-convey-assistant/models'
+
 /** 草稿上限（字符）。超出直接拒绝，不做截断，避免"改了一半"的语义事故。 */
 export const MAX_DRAFT_CHARS = 8000
 

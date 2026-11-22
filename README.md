@@ -25,12 +25,14 @@ This plugin does not guess for you. It does two things:
 1. **Restructures the text** into an unambiguous form (two depths, below);
 2. **Turns whatever it genuinely cannot infer into one plain-language question**, so a one-sentence answer replaces a round trip.
 
-## Two depths
+## Two postures
 
-| | ✨ light | 🪄 deep |
+Default is **"Guess what I really mean"**. If you would rather she did not editorialize, switch to **"Let me finish first"** in her settings panel.
+
+| | Let me finish first | Guess what I really mean (default) |
 |---|---|---|
 | In a word | literal | faithful |
-| What it does | Summarize and bullet: split run-ons, drop filler, separate parallel asks, make elided subjects explicit | Read for intent and rewrite as goal / deliverable / constraints / acceptance criteria |
+| What it does | Structure only: split run-ons, drop filler, separate parallel asks, make elided subjects explicit | Read for intent and rewrite as goal / deliverable / constraints / acceptance criteria |
 | What it refuses to do | Restyle, merge distinct asks, invent structure you did not imply | Invent facts, pick a referent it cannot resolve, add specifications |
 | Length | 60–120% of the draft | 80–200% of the draft |
 
@@ -39,14 +41,30 @@ Both obey one hard rule: **missing information becomes a question, never a fabri
 ## Using it
 
 1. Write your draft in the composer.
-2. Click ✨ (light) or 🪄 (deep) in the composer toolbar.
+2. Click ✨ in the composer toolbar.
 3. A card shows **your original** next to **the result**; the result is editable.
 4. If a genuine fork exists that would change what the agent does, the card asks, e.g.:
 
    > I had a think — this one's still a bit fuzzy~ did you mean figures/hhg_spectrum.png by "that figure"?
 
-   Answer in the box, hit **Recompile**, and it reruns with your answer folded in.
+   Answer in the box, hit **Recompile**, and she reruns with your answer folded in.
 5. Hit **Apply to draft**. The composer text is replaced; **you still press send yourself.**
+
+## The resident pet & her settings
+
+Below the composer there is a switch: **"Let DSH-chan stay around"**, **on by default** — otherwise you would never find her.
+
+- While resident she **wanders and hops** around the empty space of the conversation. Move your mouse and she **freezes instantly**, waiting for you; a moment after you stop, she resumes.
+- **Hover her** and she asks: **"Master, would you like to configure me?"** — click it to open her settings panel:
+
+| Setting | Meaning |
+|---|---|
+| **Model** | Defaults to "follow this conversation". You may also pin one model for a single rewrite — it **does not change the model your session uses**. |
+| **Posture** | "Let me finish first" / "Guess what I really mean" — see above. |
+| **Permission to roam** | "Go on, run around~" / "Stay still, don't move". |
+| Resident switch off | She clocks out. Turn it back on and she **makes an entrance** again. |
+
+Every choice is stored locally in your browser — a couple of strings, never any draft content.
 
 ## Install
 
@@ -103,6 +121,7 @@ This is the project's first priority, and it is checkable rather than merely pro
 | Analytics / telemetry | **None.** |
 | Does my draft reach logs? | **No.** Never in error messages, console output, or `~/.dsh/logs`. |
 | Does the plugin store my draft? | **No.** In memory only. |
+| Is my model choice remembered? | Only the `provider/model` strings (localStorage), never any conversation content. |
 
 **Honest boundaries** — we do not pretend to remove these:
 

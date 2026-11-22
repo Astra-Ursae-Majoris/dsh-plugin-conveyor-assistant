@@ -19,13 +19,14 @@
  */
 import type { Context } from '@deepseek-ai/cordis'
 import type {} from '@deepseek-ai/dsh-client-connection'
-import { ROUTE_PATH } from '../shared/constants.js'
-import type { ConveyResult } from '../shared/protocol.js'
+import { MODELS_PATH, ROUTE_PATH } from '../shared/constants.js'
+import type { ConveyModelsResult, ConveyResult } from '../shared/protocol.js'
 import { sendFailure, sendJson } from './errors.js'
 import { readJsonBody, validateBody } from './validate.js'
 import { resolveRoute } from './model.js'
 import { callModel } from './complete.js'
 import { parseModelOutput } from './output.js'
+import { listModelOptions } from './models.js'
 
 /** 插件配置（cordis.patch.yml 的 config 段；也可以被用户 patch 覆盖）。 */
 export interface ConveyPluginConfig {
@@ -78,6 +79,39 @@ export function registerRoute(ctx: Context, config: NormalizedConfig): void {
       }),
     'convey-assistant: rewrite route',
   )
+
+  // 只读的模型目录路由：给卡片里的下拉用。走同一个受认证 Fetch 注册表，
+  // 因此同样只有 owner 页面能到达；它不读会话、不出网。
+  ctx.effect(
+    () =>
+      ctx.connection.fetch.register({
+        path: MODELS_PATH,
+        methods: ['POST'],
+        requestBody: 'buffered',
+        fetch: request => handleModelsRequest(ctx, request),
+      }),
+    'convey-assistant: models route',
+  )
+}
+
+/**
+ * 模型目录请求：只认 POST（不用 GET 是为了复用同一套 body 读取与鉴权路径）。
+ * @param ctx 宿主上下文
+ * @param request Connection 桥接好的 Fetch 请求
+ */
+async function handleModelsRequest(ctx: Context, request: Request): Promise<Response> {
+  let rejection: number | undefined
+  try {
+    rejection = ctx.connection.requestRejection(request)
+  } catch {
+    rejection = 403
+  }
+  if (rejection !== undefined) return sendFailure('bad-request', 'en', rejection)
+  if (request.method !== 'POST') return sendFailure('bad-request', 'en', 405)
+
+  const options = await listModelOptions(ctx)
+  const payload: ConveyModelsResult = { ok: true, options, current: null }
+  return sendJson(payload)
 }
 
 /**
@@ -109,8 +143,12 @@ async function handleRequest(ctx: Context, config: NormalizedConfig, request: Re
   if (!parsed.ok) return sendFailure(parsed.code, parsed.locale)
   const current = parsed.body
 
-  // 5) 解析"用户自己选的模型"。解析不到就明确失败，绝不挑第一个 provider。
-  const route = resolveRoute(ctx, current.sessionId, config)
+  // 5) 解析"用户自己选的模型"：本次下拉选择 > 会话当前模型 > 全局默认。
+  //    解析不到就明确失败，绝不挑第一个 provider。
+  const picked = current.provider !== undefined && current.model !== undefined
+    ? { provider: current.provider, model: current.model }
+    : undefined
+  const route = resolveRoute(ctx, current.sessionId, config, picked)
   if (route === undefined) return sendFailure('no-model', current.locale)
 
   // 6) 唯一一次外发：无工具、无历史、无 sessionId、显式预算。

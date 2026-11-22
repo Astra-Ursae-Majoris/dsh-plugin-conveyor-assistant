@@ -86,17 +86,24 @@ function attempt(read: () => unknown): ResolvedRoute | undefined {
  * 按优先级解析本次改写使用的模型路由。
  * @param ctx 宿主上下文（需要 llm 已注入；其它服务按需读取）
  * @param sessionId 客户端带来的会话标识（可选；没有它就退到全局默认）
- * @param override 插件显式配置（provider+model 同时存在时优先级最高）
+ * @param override 插件显式配置（部署方锁定的端点，优先级最高）
+ * @param picked 用户在这次改写里临时选的端点（UI 下拉；不改变会话模型）
  * @returns 精确路由，或 undefined（由调用方映射为 no-model）
  */
 export function resolveRoute(
   ctx: Context,
   sessionId: string | undefined,
   override: RouteOverride,
+  picked?: RouteOverride,
 ): ResolvedRoute | undefined {
-  // 1) 显式配置：两个字段都齐全才算数（normalizeConfig 已在加载期保证这一点）。
+  // 1) 插件显式配置：两个字段都齐全才算数（normalizeConfig 已在加载期保证这一点）。
   if (override.provider !== undefined && override.model !== undefined) {
     return { provider: override.provider, model: override.model }
+  }
+
+  // 2) 用户在下拉里临时指定的端点：优先于会话/全局默认，但只在"这一次"生效。
+  if (picked !== undefined && picked.provider !== undefined && picked.model !== undefined) {
+    return { provider: picked.provider, model: picked.model }
   }
 
   if (sessionId !== undefined) {

@@ -1,6 +1,6 @@
 /**
  * 浏览器半边的两个 UI 入口：
- * - `ConveyButtons`  → 槽 `conversation.input.left`：工具行左侧两个紧凑按钮（✨ 轻 / 🪄 重）
+ * - `ConveyButtons`  → 槽 `conversation.input.left`：工具行左侧**一个** ✨ 按钮（v0.2 起两档收进配置面板）
  * - `ConveyCard`     → 槽 `conversation.input.dock`：输入卡片上方的整宽意图确认卡片
  *
  * 槽位与 props 依据 C 报告 §1（`conversation.input.left`: list/session；`conversation.input.dock`:
@@ -18,6 +18,7 @@ import {
 } from '@deepseek-ai/dsh-client-ui-primitives'
 import { PetQuestionRow, type PetMood } from './Pet'
 import { PET_CSS } from './pet-css'
+import { settingsStore } from './settings'
 import {
   planRestore,
   planWriteBack,
@@ -76,9 +77,13 @@ function useRetain(props: ConveySlotProps): void {
 
 // ── 工具行按钮 ──────────────────────────────────────────────────────────────
 
-/** 两个档位按钮（挂在 conversation.input.left） */
+/**
+ * 一个 ✨ 按钮（挂在 conversation.input.left）。
+ * v0.2 起「轻/重」不再占工具栏，改成配置面板里的「说话方式」；这里按当前设置发起改写（默认 max）。
+ */
 export function ConveyButtons(props: ConveySlotProps): React.ReactElement {
   const { forge, t, inputActions } = props
+  const settings = useStore(settingsStore)
   const useInput = props.useInput ?? useEmptyInput
   const state = useInput((value) => value)
   const controller = useController(props)
@@ -87,39 +92,25 @@ export function ConveyButtons(props: ConveySlotProps): React.ReactElement {
 
   const compiling = card.kind === 'loading'
   const locked = inputActions === undefined || state.phase !== 'plain' || state.draft.trim() === '' || compiling
-  const start = (mode: ConveyMode): void => {
+  const start = (): void => {
     if (locked || controller === undefined) return
-    controller.start(mode, state)
+    controller.start(settings.mode, state)
   }
   void forge
 
   return (
-    <span style={styles.buttonGroup}>
-      <Tooltip label={t('btn.light')} side="top" portal>
-        <Button
-          size="sm"
-          variant="ghost"
-          aria-label={t('btn.light.aria')}
-          disabled={locked}
-          onMouseDown={keepFocus}
-          onClick={() => { start('light') }}
-        >
-          <span aria-hidden="true">✨</span>
-        </Button>
-      </Tooltip>
-      <Tooltip label={t('btn.max')} side="top" portal>
-        <Button
-          size="sm"
-          variant="ghost"
-          aria-label={t('btn.max.aria')}
-          disabled={locked}
-          onMouseDown={keepFocus}
-          onClick={() => { start('max') }}
-        >
-          <span aria-hidden="true">🪄</span>
-        </Button>
-      </Tooltip>
-    </span>
+    <Tooltip label={t('btn.convey')} side="top" portal>
+      <Button
+        size="sm"
+        variant="ghost"
+        aria-label={t('btn.convey.aria')}
+        disabled={locked}
+        onMouseDown={keepFocus}
+        onClick={start}
+      >
+        <span aria-hidden="true">✨</span>
+      </Button>
+    </Tooltip>
   )
 }
 

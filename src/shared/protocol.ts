@@ -12,6 +12,10 @@ export interface ConveyRequest {
   context?: string
   /** 可选：用户对上一条追问的补充，重新编译时带上 */
   supplement?: string
+  /** 可选：用户在卡片里临时指定的 provider（只影响这一次改写，不改变会话模型） */
+  provider?: string
+  /** 可选：与 provider 成对出现的 model id */
+  model?: string
   /** 可选：当前会话 id。只用于把「用户在这个会话里选的模型」解析准，不会写入任何会话记录 */
   sessionId?: string
 }
@@ -36,3 +40,26 @@ export interface ConveyFailure {
 }
 
 export type ConveyResponse = ConveyResult | ConveyFailure
+
+/** 模型下拉里的一项 */
+export interface ConveyModelOption {
+  /** 提供方路由键，例如 deepseek / local-ollama */
+  provider: string
+  /** 提供方显示名 */
+  providerLabel: string
+  /** 模型 id */
+  model: string
+  /** 模型显示名 */
+  label: string
+  /** 可选说明 */
+  description?: string
+}
+
+/** GET 模型目录的结果 */
+export interface ConveyModelsResult {
+  ok: true
+  /** 可选模型（可能为空：provider 没有公布目录时） */
+  options: ConveyModelOption[]
+  /** 当前会用的路由；解析不到就是 null（此时前端只显示"跟随当前对话"） */
+  current: { provider: string; model: string } | null
+}

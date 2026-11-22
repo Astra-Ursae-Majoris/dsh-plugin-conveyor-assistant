@@ -4,8 +4,11 @@
  * 装配顺序（与官方客户端插件一致，见 C 报告 §1.4 / §6）：
  * 1. 注册 i18n 字典（zh / en；缺 key 由框架沿 fallback 链回退）；
  * 2. 建 per-session 控制器注册表，并挂到插件 fiber 上（卸载即全部中止）；
- * 3. 用 `ctx.slots.inject(name, cb)` 等槽位被声明后，再 `register` 两个入口
- *    （直接 register 一个还没被声明的槽会抛错）。
+ * 3. 用 `ctx.slots.inject(name, cb)` 等槽位被声明后，再 `register` 三个入口
+ *    （直接 register 一个还没被声明的槽会抛错）：
+ *    · conversation.input.left     —— ✨ 一个按钮
+ *    · conversation.input.dock     —— 意图确认卡片（unchanged）
+ *    · conversation.composer.dock  —— v0.2「让 DSH娘 常驻」开关行 + 桌宠宿主
  *
  * 注意：本文件不 import 任何未安装的客户端包；服务只通过结构类型访问（见 types.ts 顶部说明）。
  */
@@ -15,6 +18,8 @@ import { ConveyButtons, ConveyCard } from './components'
 import { ConveyRegistry } from './controller'
 import { readRecentContext } from './context'
 import { createTranslate, en, NS, zh } from './locale'
+import { ConveyDock } from './ResidentDock'
+import { currentModelOverride } from './settings'
 import type { LocaleFace, SessionsFace, SlotsFace } from './types'
 
 /** 本插件依赖的服务：槽位注册表 + 语言运行时（其余服务按需 get，不强制注入） */
@@ -70,9 +75,11 @@ export function apply(ctx: Context): void {
 
   // 3) per-session 控制器注册表；会话服务是可选的（只用于取"上一轮对话"做 context）
   const sessions = readService<SessionsFace>(ctx, 'sessions')
+  // 第三个参数是"用户临时挑的模型"：每次发请求时现读，所以面板里改完下一次就生效
   const forge = new ConveyRegistry(
     readLocaleTag,
     (sessionId, draft) => readRecentContext(sessions, sessionId, draft),
+    () => currentModelOverride(),
   )
   ctx.effect(() => () => { forge.dispose() }, 'convey-assistant: per-session controllers')
 
@@ -91,4 +98,12 @@ export function apply(ctx: Context): void {
     order: 10,
     inject: face,
   }, ConveyCard))
+
+  // v0.2：输入卡片**下方**的常驻开关行（同时是桌宠的挂载点）
+  services.slots.inject('conversation.composer.dock', () => services.slots.register({
+    name: 'conversation.composer.dock',
+    id: 'convey-assistant.resident',
+    order: 20,
+    inject: face,
+  }, ConveyDock))
 }

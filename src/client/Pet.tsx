@@ -13,8 +13,15 @@
 
 import * as React from 'react'
 
-/** 宠物的四种表情 */
-export type PetMood = 'idle' | 'thinking' | 'asking' | 'happy'
+/**
+ * 宠物的表情：
+ * - idle：睁眼待机
+ * - thinking：改写请求进行中（头顶两颗像素点跳动）
+ * - asking：卡片里有追问
+ * - happy：被点了一下（300ms 眯眼弹跳）
+ * - alert：鼠标一动就被"抓包"定格（睁眼 + 头顶一个像素感叹号）
+ */
+export type PetMood = 'idle' | 'thinking' | 'asking' | 'happy' | 'alert'
 
 /** 点击宠物时随机抽一句的本地招呼语（**不调模型**，纯暖场） */
 export const PET_GREETINGS: readonly string[] = [
@@ -193,6 +200,13 @@ export function PetAvatar({ mood, closed = false }: { readonly mood: PetMood; re
           <rect className="dca-pet-think-dot" x={16} y={3} width={1} height={1} />
           <rect className="dca-pet-think-dot" x={18} y={2} width={1} height={1} />
           <rect className="dca-pet-think-dot" x={20} y={4} width={1} height={1} />
+        </g>
+      )}
+      {/* alert：鼠标一动她就"定格 + 冒个小感叹号"，像被抓到偷跑 */}
+      {mood === 'alert' && (
+        <g fill={PALETTE['b']}>
+          <rect x={18} y={2} width={1} height={2} />
+          <rect x={18} y={5} width={1} height={1} />
         </g>
       )}
     </svg>

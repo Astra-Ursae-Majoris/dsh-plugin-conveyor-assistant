@@ -172,7 +172,13 @@ export class SessionController {
   localeReader: () => string = () => 'en'
   /** 由注册表注入：读最近一条用户消息（可选 context） */
   contextReader: (sessionId: string, draft: string) => string | undefined = () => undefined
+  /** 由注册表注入：读"用户临时挑的模型"（undefined = 跟随当前对话；只影响这一次改写） */
+  modelPicker: () => { provider: string; model: string } | undefined = () => undefined
+  /** 由注册表注入：改写是否在跑（桌面宠物据此切"思考脸"） */
+  onBusy: ((busy: boolean) => void) | undefined = undefined
 
+  /** 当前是否有一发在途请求（对外只通过 onBusy 报告一次进入/离开） */
+  private busy = false
   private abortController: AbortController | undefined
   private abortReason: 'user' | 'timeout' | 'superseded' | undefined
   private requestSeq = 0
@@ -264,12 +270,47 @@ export class SessionController {
     this.store.set(IDLE)
   }
 
+  /** 读用户临时挑的模型（异常一律当"跟随当前对话"） */
+  private pickModel(): { provider: string; model: string } | undefined {
+    try {
+      const picked = this.modelPicker()
+      if (picked === undefined) return undefined
+      if (picked.provider === '' || picked.model === '') return undefined
+      return { provider: picked.provider, model: picked.model }
+    } catch {
+      return undefined
+    }
+  }
+
+  /** 进入"在跑"状态（幂等：并发/重入只报一次） */
+  private beginBusy(): void {
+    if (this.busy) return
+    this.busy = true
+    try {
+      this.onBusy?.(true)
+    } catch {
+      // 订阅方（宠物动画）出错不能影响请求本身
+    }
+  }
+
+  /** 离开"在跑"状态（幂等） */
+  private endBusy(): void {
+    if (!this.busy) return
+    this.busy = false
+    try {
+      this.onBusy?.(false)
+    } catch {
+      // 同上
+    }
+  }
+
   /** 请求主流程 */
   private run(mode: ConveyMode, capture: DraftCapture, supplement: string): void {
     if (this.disposed) return
     this.abort('superseded')
     const seq = ++this.requestSeq
     this.store.set({ kind: 'loading', mode, capture, supplement })
+    this.beginBusy()
 
     // 先建模板（可能抛 CaptureError），再发请求
     let template: string
@@ -281,6 +322,7 @@ export class SessionController {
         kind: 'error',
         code: error instanceof CaptureError ? codeForCapture(error) : 'error.unknown',
       })
+      this.endBusy()
       return
     }
 
@@ -304,12 +346,16 @@ export class SessionController {
       ...(supplement.trim() === '' ? {} : { supplement }),
       // 只传会话 id：宿主用它解析"这个会话里用户选的模型"，不读任何会话内容
       ...(this.sessionId === '' ? {} : { sessionId: this.sessionId }),
+      // 用户在配置面板里临时挑的模型：只覆盖这一次改写，不改变会话模型
+      ...(this.pickModel() ?? {}),
     }
 
     void requestRewrite(request, controller.signal).then((result) => {
       window.clearTimeout(timer)
+      // 被新请求接管 / 已卸载：busy 的归属已经交给接手的人，这里不能收尾
       if (this.requestSeq !== seq || this.disposed) return
       this.abortController = undefined
+      this.endBusy()
       const reason = this.abortReason
       this.abortReason = undefined
 
@@ -354,6 +400,8 @@ export class SessionController {
   private abort(reason: 'user' | 'timeout' | 'superseded'): void {
     const controller = this.abortController
     this.abortReason = reason
+    // superseded：新的 run() 立刻接管 busy，这里不收尾，否则宠物的"思考脸"会闪一下
+    if (reason !== 'superseded') this.endBusy()
     if (controller === undefined) return
     this.abortController = undefined
     controller.abort()
@@ -390,13 +438,20 @@ function normalizeResult(text: string): string {
 
 /** 会话 → 控制器 的注册表（插件生命周期内唯一实例） */
 export class ConveyRegistry {
+  /** 正在改写的会话数（>0 = 桌宠切"思考脸"；0 = 回到 idle） */
+  readonly busy = new Store(0)
+
   private readonly controllers = new Map<string, SessionController>()
   private disposed = false
+  private readonly modelPicker: () => { provider: string; model: string } | undefined
 
   constructor(
     private readonly localeReader: () => string,
     private readonly contextReader: (sessionId: string, draft: string) => string | undefined,
-  ) {}
+    modelPicker: () => { provider: string; model: string } | undefined = () => undefined,
+  ) {
+    this.modelPicker = modelPicker
+  }
 
   /** 组件挂载：取控制器并持有一份引用 */
   retain(sessionId: string): SessionController {
@@ -427,6 +482,11 @@ export class ConveyRegistry {
     controller.sessionId = sessionId
     controller.localeReader = () => this.localeReader()
     controller.contextReader = (id, draft) => this.contextReader(id, draft)
+    controller.modelPicker = () => this.modelPicker()
+    // busy 是跨会话的计数：宠物在任何一个会话里思考都算"她正在忙"
+    controller.onBusy = (busy) => {
+      this.busy.set(Math.max(0, this.busy.getSnapshot() + (busy ? 1 : -1)))
+    }
     if (!this.disposed) this.controllers.set(sessionId, controller)
     return controller
   }

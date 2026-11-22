@@ -1,6 +1,6 @@
 {
   "name": "dsh-convey-assistant",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Turn a rough draft into intent an AI agent cannot misread — a light bullet summary or a deep intent rewrite, plus clarifying questions — before you send it.",
   "type": "module",
   "main": "lib/index.js",
