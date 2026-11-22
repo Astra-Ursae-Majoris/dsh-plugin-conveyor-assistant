@@ -11,7 +11,15 @@ npm run typecheck  # 针对 DSH 0.2.2-rc.5 真实类型
 npm run verify     # 发布前自检（含 npm pack 内容检查）
 ```
 
-装到真实 DSH 里调试：
+装到真实 DSH 里调试（跨平台，Node 版）：
+
+```powershell
+node scripts/install.mjs --profile desktop
+# 改完代码重跑 npm run build，再刷新 DSH 页面
+node scripts/uninstall.mjs --profile desktop
+```
+
+PowerShell 版：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\install.ps1 -Profile desktop
