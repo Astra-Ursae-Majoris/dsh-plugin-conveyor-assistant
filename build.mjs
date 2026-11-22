@@ -71,5 +71,5 @@ const wrapper =
 fs.writeFileSync(path.join(lib, 'client.js'), wrapper)
 
 const bytes = fs.statSync(path.join(lib, 'client.js')).size
-console.log(`[build] lib/client.js ` + bytes + ` bytes`)
-console.log(`[build] done.`)
+console.error(`[build] lib/client.js ` + bytes + ` bytes`)
+console.error(`[build] done.`)

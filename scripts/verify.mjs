@@ -86,8 +86,8 @@ else ok('src 下没有把 draft/text 打进 console 的调用')
 // 8) npm pack 内容自检
 try {
   const out = execSync('npm pack --dry-run --json', { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
-  // prepack 会往 stdout 打构建日志；npm 12 输出的是「以包名为键的对象」，老版本是数组
-  const at = out.search(/^\{/m)
+  // npm 10 输出数组、npm 12 输出「以包名为键的对象」；构建日志已改走 stderr，这里再兜一层
+  let at = out.search(/^[\[{]/m)
   if (at < 0) throw new Error('npm pack 输出里没找到 JSON')
   const parsed = JSON.parse(out.slice(at))
   const info = Array.isArray(parsed) ? parsed[0] : Object.values(parsed)[0]
