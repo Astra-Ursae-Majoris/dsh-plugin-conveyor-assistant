@@ -44,6 +44,14 @@ This plugin does not guess for you:
 Three ways, pick one. The package is **prebuilt**: `lib/index.js` and `lib/client.js` are committed,
 and installation runs **no build script on your machine**.
 
+### 0. From npm (easiest, mirrored in China)
+
+```bash
+dsh plugin --profile desktop add dsh-convey-assistant
+```
+
+Or **Settings → Plugins → Add plugin**, paste `dsh-convey-assistant`, pick the npmmirror source, install.
+
 ### A. Clone + one command (recommended)
 
 ```bash

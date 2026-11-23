@@ -15,6 +15,7 @@
     "lib/client.js",
     "cordis.patch.yml",
     "icon.svg",
+    "locale/*.json",
     "README.md",
     "README.zh.md",
     "LICENSE",
@@ -85,5 +86,9 @@
   "homepage": "https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant#readme",
   "bugs": {
     "url": "https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant/issues"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Astra-Ursae-Majoris"
 }

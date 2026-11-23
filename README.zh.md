@@ -41,7 +41,17 @@
 三种方式任选一种。**本插件是预构建的**：仓库里已经带上 `lib/index.js` 与 `lib/client.js`，
 安装时**不会**在你机器上执行任何构建脚本。
 
-### 方式 A：克隆 + 一条命令（推荐）
+### 方式 0：从 npm 装（国内网络最省事，推荐）
+
+包已发布到 npm，国内默认走 npmmirror 镜像，速度快：
+
+```bash
+dsh plugin --profile desktop add dsh-convey-assistant
+```
+
+或者 **设置 → 插件 → 添加插件**，输入框填 `dsh-convey-assistant`，安装源选「中国大陆镜像源」，点安装。
+
+### 方式 A：克隆 + 一条命令
 
 ```bash
 git clone https://github.com/Astra-Ursae-Majoris/dsh-plugin-conveyor-assistant.git
