@@ -41,7 +41,7 @@ This plugin does not guess for you:
 
 ## Install in 30 seconds
 
-Three ways, pick one. The package is **prebuilt**: `lib/index.js` and `lib/client.js` are committed,
+Four ways — **option 0 is the easiest**. The package is **prebuilt**: `lib/index.js` and `lib/client.js` are committed,
 and installation runs **no build script on your machine**.
 
 ### 0. From npm (easiest, mirrored in China)
