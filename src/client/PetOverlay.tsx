@@ -29,6 +29,7 @@ import {
   parseModelChoice
 } from './settings'
 import { loadModelOptions } from './models'
+import { pickLine } from './copy'
 import type { ConveyRegistry } from './controller'
 import type { ConveyModelOption, ConveyMode } from '../shared/protocol'
 import type { Translate } from './locale'
@@ -163,6 +164,8 @@ function PetLayer({ t, forge }: { readonly t: Translate; readonly forge: ConveyR
   const [entering, setEntering] = React.useState(true)
   const [action, setAction] = React.useState<'hop' | 'sway' | null>(null)
   const [hover, setHover] = React.useState(false)
+  /** 每次悬停换一句：进气泡前随机取一条，不重复上一句 */
+  const [hoverLine, setHoverLine] = React.useState('')
 
   const petRef = React.useRef<HTMLDivElement>(null)
   const areaRef = React.useRef(area)
@@ -300,6 +303,7 @@ function PetLayer({ t, forge }: { readonly t: Translate; readonly forge: ConveyR
 
   const onPointerEnter = (): void => {
     cancelHide()
+    setHoverLine((prev) => { const next = pickLine('hover'); return next === prev ? pickLine('hover') : next })
     setHover(true)
   }
   const onPointerLeave = (): void => {
@@ -365,7 +369,7 @@ function PetLayer({ t, forge }: { readonly t: Translate; readonly forge: ConveyR
           onPointerLeave={onPointerLeave}
         >
           <button type="button" className="dca-pet-bubble-hit" onMouseDown={onPetMouseDown} onClick={onPetClick}>
-            {t('pet.hover')}
+            {hoverLine !== '' ? hoverLine : t('pet.hover')}
           </button>
         </div>
       )}

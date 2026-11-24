@@ -12,6 +12,7 @@
  */
 
 import * as React from 'react'
+import { pickLine } from './copy'
 
 /**
  * 宠物的表情：
@@ -261,9 +262,9 @@ export function PetQuestionRow({ mood, title, questions, thinkingLabel, bubbleLa
   const onPetClick = (event: React.MouseEvent<HTMLDivElement>): void => {
     // 不抢输入框焦点：鼠标点插画不该让用户丢失光标
     event.preventDefault()
-    const next = (greetingIndex + 1) % PET_GREETINGS.length
-    setGreetingIndex(next)
-    setGreeting(PET_GREETINGS[next])
+    // 从招呼语池里随机取一句（自动避免与上一句重复）
+    setGreetingIndex((prev) => prev + 1)
+    setGreeting(pickLine('greeting'))
     setHappy(true)
   }
 

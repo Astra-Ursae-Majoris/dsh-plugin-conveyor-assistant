@@ -18,6 +18,7 @@ import { ConveyButtons, ConveyCard } from './components'
 import { ConveyRegistry } from './controller'
 import { readRecentContext } from './context'
 import { createTranslate, en, NS, zh } from './locale'
+import { setCopyLocale } from './copy'
 import { ConveyDock } from './ResidentDock'
 import { currentModelOverride } from './settings'
 import type { LocaleFace, SessionsFace, SlotsFace } from './types'
@@ -72,6 +73,8 @@ export function apply(ctx: Context): void {
     return 'en'
   }
   const t = createTranslate(readLocaleTag)
+  // 文案池跟随同一套语言判定（中英各一池，每次随机且不与上次重复）
+  setCopyLocale(readLocaleTag)
 
   // 3) per-session 控制器注册表；会话服务是可选的（只用于取"上一轮对话"做 context）
   const sessions = readService<SessionsFace>(ctx, 'sessions')

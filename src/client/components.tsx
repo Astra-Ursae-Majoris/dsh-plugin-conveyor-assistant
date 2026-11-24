@@ -18,6 +18,7 @@ import {
 } from '@deepseek-ai/dsh-client-ui-primitives'
 import { PetQuestionRow, type PetMood } from './Pet'
 import { PET_CSS } from './pet-css'
+import { pickLine } from './copy'
 import { settingsStore } from './settings'
 import {
   planRestore,
@@ -133,6 +134,8 @@ export function ConveyCard(props: ConveySlotProps): React.ReactElement | null {
 
   const [planError, setPlanError] = React.useState<CardErrorCode | null>(null)
   const pendingVerify = React.useRef<PendingVerify | null>(null)
+  /** 等待话术缓存：同一请求（同一 capture）内不变，新请求换一句 */
+  const loadingLineRef = React.useRef<{ readonly capture: DraftCapture; readonly line: string } | null>(null)
 
   // 结果可编辑时，占位符完整性实时校验（不合格就禁用"确认写回"）
   const edited = card.kind === 'ready' ? card.editedText : ''
@@ -203,6 +206,15 @@ export function ConveyCard(props: ConveySlotProps): React.ReactElement | null {
 
   if (controller === undefined || card.kind === 'idle') return null
 
+  // 等待话术：同一个请求内保持不变（按 capture 身份判断），新请求换一句
+  if (card.kind === 'loading') {
+    const cached = loadingLineRef.current
+    if (cached === null || cached.capture !== card.capture) {
+      loadingLineRef.current = { capture: card.capture, line: pickLine('loading') }
+    }
+  }
+  const loadingLine = card.kind === 'loading' ? (loadingLineRef.current?.line ?? t('card.loading')) : t('card.loading')
+
   const close = (): void => {
     setPlanError(null)
     controller.discard()
@@ -226,10 +238,10 @@ export function ConveyCard(props: ConveySlotProps): React.ReactElement | null {
     return (
       <div style={styles.card} data-dca-card="loading">
         <style>{PET_CSS}</style>
-        {header(<TextShimmer active>{t('card.loading')}</TextShimmer>, 'ongoing')}
+        {header(<TextShimmer active>{loadingLine}</TextShimmer>, 'ongoing')}
         <PetQuestionRow
           mood={'thinking' satisfies PetMood}
-          title={t('card.loading')}
+          title={loadingLine}
           questions={[]}
           thinkingLabel={t('card.loading.hint')}
           bubbleLabel={t('card.aria')}

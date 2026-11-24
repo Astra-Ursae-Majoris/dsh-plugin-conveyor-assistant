@@ -1,6 +1,6 @@
 {
   "name": "dsh-convey-assistant",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "把口语草稿翻译成 AI Agent 不会误读的意图：先追问你没说清楚的地方（气泡提示），再改写成结构化工单，你确认后才写回输入框。附带一只常驻的像素大肥鱼，鼠标一停就自己溜达。",
   "type": "module",
   "main": "lib/index.js",
